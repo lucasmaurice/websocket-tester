@@ -1,0 +1,48 @@
+name: Deploy Images to GHCR
+
+env:
+  IMAGE_NAME: ghcr.io/lucasmaurice/websocket-tester
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
+      - LICENSE
+      - .github/**
+      - .gitignore
+
+jobs:
+  push-store-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout GitHub Action
+        uses: actions/checkout@main
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push - API
+        uses: docker/build-push-action@v6
+        with:
+          context: ./api
+          file: ./api/Dockerfile
+          push: true
+          tags: ${{ env.IMAGE_NAME }}-api:latest,${{ env.IMAGE_NAME }}-api:${{ github.sha }}
+
+      - name: Build and push - Client
+        uses: docker/build-push-action@v6
+        with:
+          context: ./client
+          file: ./client/Dockerfile
+          push: true
+          tags: ${{ env.IMAGE_NAME }}-client:latest,${{ env.IMAGE_NAME }}-client:${{ github.sha }}
