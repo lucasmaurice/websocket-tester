@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - /client/**
+      - client/**
 
 jobs:
   push-store-image:
