@@ -48,9 +48,7 @@ class Home extends React.Component {
     if (this.state.message) {
       this.props.chat.ws.send(
         JSON.stringify({
-          sender: this.props.chat.id,
           message: this.state.message,
-          createdAt: Date.now(),
         })
       );
       this.setState({ message: "" });
@@ -67,8 +65,7 @@ class Home extends React.Component {
     const { id } = this.props.chat;
     return (
       <div className="parent">
-        <h2 style={{ marginBottom: "0px" }}>You are user {id}</h2>
-        <h2 style={{ marginTop: "5px" }}>You are now chatting with user {id % 2 === 0 ? id + 1 : id - 1}</h2>
+        {id != null ? <h2 style={{ marginBottom: "0px" }}>You are user {id}</h2> : <h2 style={{ marginBottom: "0px" }}>Waiting for user id...</h2>}
         <div className="chat-box">
           <div
             className="text-area"

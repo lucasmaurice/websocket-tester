@@ -14,48 +14,58 @@ app.use(cors());
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-const connections = {}; // pair off connections by 2's {0,1}, {2,3}
+const ws_connections = [];
 
 const messages = [];
 
-wss.on("connection", async function connection(ws, req) {
-  const id = url.parse(req.url, true).query.id;
+let lastClientId = 0;
 
-  connections[id] = { sender: id, ws };
+wss.on("connection", (ws, req) => {
+  const clientId = lastClientId++;
+  console.log("New client connected. Client ID:", clientId);
 
-  ws.on("message", async function incoming(message) {
-    const parsedMessage = JSON.parse(message);
+  ws_connections.push(ws);
 
-    // add message to messages array
+  ws.send(
+    JSON.stringify({
+      type: "init",
+      id: clientId,
+      messages: messages,
+    })
+  );
+
+  ws.on("message", (message) => {
+    try {
+      const parsedMessage = JSON.parse(message);
+    } catch (error) {
+      console.error("Error parsing message:", error);
+      ws.send(JSON.stringify({ error: "Invalid message format, it should be JSON." }));
+      return;
+    }
+
+    parsedMessage.clientId = clientId;
+    parsedMessage.timestamp = new Date().toISOString();
     messages.push(parsedMessage);
 
-    // calculate the receiver of the message
-    const receiver = parsedMessage.sender % 2 === 0 ? parsedMessage.sender + 1 : parsedMessage.sender - 1;
-
-    // get messages from the messages array
-    const newMessages = messages.filter((msg) => msg.sender === parsedMessage.sender || (msg.sender === receiver && msg.createdAt > parsedMessage.createdAt));
-
-    // send new messages to sender
-    connections[parsedMessage.sender].ws.send(JSON.stringify({ data: newMessages }));
-
-    // find the "Other" person in the chat and send messages
-    if (parsedMessage.sender % 2 === 0) {
-      if (connections[parsedMessage.sender + 1]) {
-        connections[parsedMessage.sender + 1].ws.send(JSON.stringify({ data: newMessages }));
+    for (const conn of ws_connections) {
+      if (conn.readyState === WebSocket.OPEN) {
+        conn.send(JSON.stringify(parsedMessage));
       }
-    } else {
-      connections[parsedMessage.sender - 1].ws.send(JSON.stringify({ data: newMessages }));
     }
   });
 
-  if (id % 2 === 1) {
-    const newMessages = messages.filter((msg) => msg.sender === parsedMessage.sender || (msg.sender === receiver && msg.createdAt > parsedMessage.createdAt));
-    connections[id].ws.send(JSON.stringify({ data: newMessages }));
-  }
+  ws.on("close", () => {
+    console.log("Client disconnected.");
+    const index = ws_connections.indexOf(ws);
+    if (index !== -1) {
+      ws_connections.splice(index, 1);
+    }
+  });
 });
 
-let id = 0;
-app.get("/id", (req, res) => res.status(200).send({ id: id++ }));
+app.get("/history", (req, res) => {
+  res.status(200).json(messages);
+});
 
 app.get("/", (req, res) => res.status(200).send("200 OK"));
 
