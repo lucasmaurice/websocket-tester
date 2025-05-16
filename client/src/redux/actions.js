@@ -1,32 +1,39 @@
 export function openConnection(payload) {
-  return async function(dispatch) {
-    let id = null
+  return async function (dispatch) {
+    let id = null;
+
+    const url = new URL(window.location.href);
 
     if (!payload.id) {
-      id = await fetch('http://localhost:5006/id').then(res => res.json())
-      //localStorage.setItem('id', id.id)
+      console.log(`Fetch the ID from: ${url.origin}/id`);
+      id = await fetch(`${url.origin}/id`).then((res) => res.json());
       dispatch({
-        type: 'FETCH_ID_SUCCESS',
-        payload: id
-      })
+        type: "FETCH_ID_SUCCESS",
+        payload: id,
+      });
     }
-    const ws = new WebSocket(`ws://localhost:5006/?id=${id ? id.id : payload.id}`)
-    
+
+    const wsUrl = new URL(url.origin);
+    wsUrl.protocol = wsUrl.protocol === "http:" ? "ws:" : "wss:";
+
+    console.log(`Starting WebSocket connection to: ${wsUrl.origin}/?id=${id ? id.id : payload.id}`);
+    const ws = new WebSocket(`${wsUrl.origin}/?id=${id ? id.id : payload.id}`);
+
     ws.onmessage = (e) => {
-      const payload = JSON.parse(e.data)
+      const payload = JSON.parse(e.data);
       dispatch({
-        type: 'RELOAD_MESSAGES',
+        type: "RELOAD_MESSAGES",
         payload: {
-          messages: payload.data
-        }
-      })
+          messages: payload.data,
+        },
+      });
     };
 
     dispatch({
-      type: 'CREATE_WEBSOCKET_COMPLETE',
+      type: "CREATE_WEBSOCKET_COMPLETE",
       payload: {
-        ws
+        ws,
       },
-    })
-  }
+    });
+  };
 }
