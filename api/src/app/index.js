@@ -35,8 +35,9 @@ wss.on("connection", (ws, req) => {
   );
 
   ws.on("message", (message) => {
+    const parsedMessage = {};
     try {
-      const parsedMessage = JSON.parse(message);
+      parsedMessage = JSON.parse(message);
     } catch (error) {
       console.error("Error parsing message:", error);
       ws.send(JSON.stringify({ error: "Invalid message format, it should be JSON." }));

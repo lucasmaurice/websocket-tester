@@ -6,14 +6,12 @@ services:
     image: chat/client
     command: node server.js
     ports:
-      - "5008:8080"
+      - "8081:8080"
   chat-api:
     build:
       context: ./api
       dockerfile: Dockerfile
     image: chat/api
     command: bash -c "forever --watch src/index.js"
-    environment:
-      - POSTGRES_CONNECTION_URI=postgres://postgres:password@postgres:5432/chat
     ports:
-      - "5006:3000"
+      - "8082:3000"

@@ -8,26 +8,20 @@ export function openConnection(payload) {
 
     ws.onmessage = (e) => {
       const payload = JSON.parse(e.data);
-      if (payload.data.type === "message") {
-        dispatch({
-          type: "NEW_MESSAGE",
-          payload: {
-            messages: payload.data,
-          },
-        });
-      } else if (payload.data.type === "init") {
-        dispatch({
-          type: "INIT_CHAT",
-          payload: payload.data,
-        });
+      console.log("Received message:", payload);
+
+      switch (payload.type) {
+        case "init":
+          dispatch({ type: "INIT_CHAT", payload: payload });
+          break;
+        case "message":
+          dispatch({ type: "NEW_MESSAGE", payload: { messages: payload } });
+          break;
+        default:
+          console.error("Unknown message type:", payload.type);
       }
     };
 
-    dispatch({
-      type: "CREATE_WEBSOCKET_COMPLETE",
-      payload: {
-        ws,
-      },
-    });
+    dispatch({ type: "CREATE_WEBSOCKET_COMPLETE", payload: { ws } });
   };
 }
