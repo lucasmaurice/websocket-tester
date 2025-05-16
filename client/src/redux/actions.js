@@ -16,8 +16,8 @@ export function openConnection(payload) {
     const wsUrl = new URL(url.origin);
     wsUrl.protocol = wsUrl.protocol === "http:" ? "ws:" : "wss:";
 
-    console.log(`Starting WebSocket connection to: ${wsUrl.origin}/?id=${id ? id.id : payload.id}`);
-    const ws = new WebSocket(`${wsUrl.origin}/?id=${id ? id.id : payload.id}`);
+    console.log(`Starting WebSocket connection to: ${wsUrl.origin}/ws?id=${id ? id.id : payload.id}`);
+    const ws = new WebSocket(`${wsUrl.origin}/ws?id=${id ? id.id : payload.id}`);
 
     ws.onmessage = (e) => {
       const payload = JSON.parse(e.data);
