@@ -11,7 +11,7 @@ export default function reducer(state = initialState, action) {
     case "CREATE_WEBSOCKET_COMPLETE":
       return { ...state, ws: payload.ws };
     case "INIT_CHAT":
-      return { ...state, messages: payload.messages, id: payload.id };
+      return { ...state, messages: payload.messages, id: payload.clientId };
     case "NEW_MESSAGE":
       return { ...state, messages: [...state.messages, payload.message] };
     default:
