@@ -58,6 +58,7 @@ let id = 0;
 app.get("/id", (req, res) => res.status(200).send({ id: id++ }));
 
 app.get("/", (req, res) => res.status(200).send("200 OK"));
+
 app.get("/-/health", (req, res) => res.status(200).send("200 OK"));
 
 server.listen(PORT, function listening() {
