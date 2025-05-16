@@ -35,7 +35,7 @@ wss.on("connection", (ws, req) => {
   );
 
   ws.on("message", (message) => {
-    const parsedMessage = {};
+    let parsedMessage = {};
     try {
       parsedMessage = JSON.parse(message);
     } catch (error) {
