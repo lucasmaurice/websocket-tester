@@ -1,18 +1,15 @@
-name: Deploy Images to GHCR
+name: Build and Push API Image to GHCR
 
 env:
-  IMAGE_NAME: ghcr.io/lucasmaurice/websocket-tester
+  IMAGE_NAME: ghcr.io/lucasmaurice/websocket-tester-api
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-    paths-ignore:
-      - README.md
-      - LICENSE
-      - .github/**
-      - .gitignore
+    paths:
+      - /api/**
 
 jobs:
   push-store-image:
@@ -31,18 +28,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push - API
+      - name: Build and Push the Image
         uses: docker/build-push-action@v6
         with:
           context: ./api
           file: ./api/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME }}-api:latest,${{ env.IMAGE_NAME }}-api:${{ github.sha }}
-
-      - name: Build and push - Client
-        uses: docker/build-push-action@v6
-        with:
-          context: ./client
-          file: ./client/Dockerfile
-          push: true
-          tags: ${{ env.IMAGE_NAME }}-client:latest,${{ env.IMAGE_NAME }}-client:${{ github.sha }}
+          tags: ${{ env.IMAGE_NAME }}:latest,${{ env.IMAGE_NAME }}:${{ github.sha }}
