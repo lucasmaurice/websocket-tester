@@ -1,6 +1,7 @@
 # Real Time Chat 🍪
 
-[![Deploy Images to GHCR](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build.yml/badge.svg?branch=main)](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build.yml)
+[![API Image](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build-api.yml/badge.svg)](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build-api.yml)
+[![Client Image](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build-client.yml/badge.svg)](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build-client.yml)
 
 > Note: This project is a fork from https://github.com/Chrischuck/websocket-docker-example without the Postges part.
 
