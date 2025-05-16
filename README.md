@@ -1,13 +1,15 @@
 # Real Time Chat 🍪
 
-A real time chat built with React, Express, Docker/Docker Compose, and love.
+> Note: This project is a fork from https://github.com/Chrischuck/websocket-docker-example without the Postges part.
+
+It is to be used as a websocket tester, to validate Reverse-Proxy or Indress configuration.
 
 This uses Docker to build/run the client and api on two seperate images. Clients are paired in chat together sequentially; i.e. client 0 and client 1, client 2 and client 3, and so forth. 
 
 ## UI
 <p align="center">
-  <img  src='https://github.com/Chrischuck/websocket-docker-example/blob/master/images/1.png' height='480' width='300'>
-  <img src='https://github.com/Chrischuck/websocket-docker-example/blob/master/images/2.png' height='480' width='300'>
+  <img  src='https://github.com/lucasmaurice/websocket-tester/blob/main/images/1.png' height='480' width='300'>
+  <img src='https://github.com/lucasmaurice/websocket-tester/blob/main/images/2.png' height='480' width='300'>
 </p>
 
 ## Goals of this repo
@@ -18,11 +20,11 @@ This uses Docker to build/run the client and api on two seperate images. Clients
 ## Installation/Running
 Clone the repo:  
 ```bash
-git clone https://github.com/Chrischuck/websocket-docker-example.git
+git clone https://github.com/lucasmaurice/websocket-tester.git
 ```
 Enter the directory:  
 ```bash
-cd websocket-docker-example
+cd websocket-tester
 ```
 
 Build Docker images:  
