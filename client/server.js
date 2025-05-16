@@ -1,18 +1,17 @@
-var path = require('path');
-var express = require('express');
+var path = require("path");
+var express = require("express");
 
 var app = express();
 
-var PORT = 8080
+var PORT = 8080;
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, "dist")));
 
-app.get('*', function(req, res) {
-    res.sendfile('./dist/index.html');
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "dist/index.html"));
 });
 
-
-app.listen(PORT, function(error) {
+app.listen(PORT, function (error) {
   if (error) {
     console.error(error);
   } else {
