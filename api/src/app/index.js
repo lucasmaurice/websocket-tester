@@ -29,7 +29,7 @@ wss.on("connection", (ws, req) => {
   ws.send(
     JSON.stringify({
       type: "init",
-      id: clientId,
+      clientId: clientId,
       messages: messages,
     })
   );
@@ -45,6 +45,7 @@ wss.on("connection", (ws, req) => {
 
     parsedMessage.clientId = clientId;
     parsedMessage.timestamp = new Date().toISOString();
+    parsedMessage.type = "message";
     messages.push(parsedMessage);
 
     for (const conn of ws_connections) {
