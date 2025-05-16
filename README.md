@@ -1,5 +1,7 @@
 # Real Time Chat 🍪
 
+[![Deploy Images to GHCR](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build.yml/badge.svg?branch=main)](https://github.com/lucasmaurice/websocket-tester/actions/workflows/package-build.yml)
+
 > Note: This project is a fork from https://github.com/Chrischuck/websocket-docker-example without the Postges part.
 
 It is to be used as a websocket tester, to validate Reverse-Proxy or Indress configuration.
