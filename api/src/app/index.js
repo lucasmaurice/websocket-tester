@@ -44,7 +44,7 @@ wss.on("connection", (ws, req) => {
       return;
     }
 
-    parsedMessage.clientId = clientId;
+    parsedMessage.sender = clientId;
     parsedMessage.timestamp = new Date().toISOString();
     parsedMessage.type = "message";
     messages.push(parsedMessage);

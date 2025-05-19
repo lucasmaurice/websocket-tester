@@ -15,7 +15,7 @@ export function openConnection(payload) {
           dispatch({ type: "INIT_CHAT", payload: payload });
           break;
         case "message":
-          dispatch({ type: "NEW_MESSAGE", payload: { messages: payload } });
+          dispatch({ type: "NEW_MESSAGE", payload: payload });
           break;
         default:
           console.error("Unknown message type:", payload.type);

@@ -13,7 +13,7 @@ export default function reducer(state = initialState, action) {
     case "INIT_CHAT":
       return { ...state, messages: payload.messages, id: payload.clientId };
     case "NEW_MESSAGE":
-      state.messages.push(payload.messages);
+      state.messages.push({ message: payload.message, sender: payload.sender, timestamp: payload.timestamp });
       return { ...state };
     default:
       return state;
