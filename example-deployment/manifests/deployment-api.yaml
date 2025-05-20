@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-api
+  template:
+    metadata:
+      labels:
+        app: chat-api
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: chat-api
+          image: ghcr.io/lucasmaurice/websocket-tester-api:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /-/health
+              port: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-api
+spec:
+  type: ClusterIP
+  selector:
+    app: chat-api
+  ports:
+    - name: http
+      targetPort: http
+      port: 80

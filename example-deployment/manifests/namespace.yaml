@@ -1,0 +1,11 @@
+# Create a kubernetes namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-websockets
+  labels:
+    name: test-websockets
+    kubernetes.io/metadata.name: test-websockets
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/warn: baseline
